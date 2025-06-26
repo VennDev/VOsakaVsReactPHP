@@ -1,31 +1,27 @@
 <?php
 
-use venndev\vosaka\time\Sleep;
-use venndev\vosaka\VOsaka;
-
 require '../vendor/autoload.php';
 
+$array = [];
 
-function benchVosakaBasicTasks(): void
-{
-    VOsaka::spawn(vosakaBasicTasksGenerator());
-    VOsaka::run();
-}
+$promiseA = async(function () use (&$array) {
+    sleep(2);
+    $array[] = 1;
+    return 'Task 1';
+});
 
-function basicTask(int $id): Generator
-{
-    yield Sleep::c(0);
-    return $id;
-}
+$promiseB = async(function () use (&$array) {
+    sleep(2);
+    $array[] = 2;
+    return 'Task 2';
+});
 
-function vosakaBasicTasksGenerator(): Generator
-{
-    $tasks = [];
-    for ($i = 0; $i < 2; $i++) {
-        $tasks[] = VOsaka::spawn(basicTask($i));
-    }
+$time = microtime(true);
+// just takes 2 seconds...
+[$resA, $resB] = await([$promiseA, $promiseB]);
 
-    yield from VOsaka::join(...$tasks)();
-}
+echo $resA; // Task 1
+echo $resB; // Task 2
 
-benchVosakaBasicTasks();
+var_dump($array);
+var_dump(microtime(true) - $time);

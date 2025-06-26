@@ -17,7 +17,8 @@
         "react/event-loop": "^1.5",
         "react/http": "^1.11",
         "react/socket": "^1.16",
-        "guzzlehttp/guzzle": "^7.9"
+        "guzzlehttp/guzzle": "^7.9",
+        "nunomaduro/pokio": "0.1"
     },
     "require-dev": {
         "phpbench/phpbench": "^1.4"
